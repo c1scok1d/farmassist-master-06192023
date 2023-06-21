@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>439457878995-cfh8ehpu1lhdul7qn9dk9ksem6kbjdui.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.439457878995-cfh8ehpu1lhdul7qn9dk9ksem6kbjdui</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>439457878995-au75aft4lbepui9056ntbt9cvpraahkk.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyBKsr9ekFrqYMqkRiC6kmdvLY_wnjTlZ6k</string>
+	<key>GCM_SENDER_ID</key>
+	<string>439457878995</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.example.farmassist</string>
+	<key>PROJECT_ID</key>
+	<string>n-test-39c44</string>
+	<key>STORAGE_BUCKET</key>
+	<string>n-test-39c44.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:439457878995:ios:94c9419f42304d34a11526</string>
+	<key>DATABASE_URL</key>
+	<string>https://n-test-39c44-default-rtdb.firebaseio.com</string>
+</dict>
+</plist>

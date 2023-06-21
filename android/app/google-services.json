@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "439457878995",
+    "firebase_url": "https://n-test-39c44-default-rtdb.firebaseio.com",
+    "project_id": "n-test-39c44",
+    "storage_bucket": "n-test-39c44.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:439457878995:android:64a16a6bc118510ca11526",
+        "android_client_info": {
+          "package_name": "com.example.farmassist"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "439457878995-au75aft4lbepui9056ntbt9cvpraahkk.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.farmassist",
+            "certificate_hash": "ed0c57cdd6765dd2c9ae6716c32168b51d7b7e6d"
+          }
+        },
+        {
+          "client_id": "439457878995-64v1g75di628ir33a4kcip904djmn31v.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDcxkVyy29a6f2FX-kHqtvnqBpf-ItbMnM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "439457878995-64v1g75di628ir33a4kcip904djmn31v.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
