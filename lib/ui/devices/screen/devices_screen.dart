@@ -113,7 +113,7 @@ class _DevicesScreenState extends TabPageState<DevicesScreen> {
                       ),
                       Text(
                         'Updated ' +
-                timeago.format(DateTime.parse(devices![index].updatedAt!)) + ' ago',
+                timeago.format(DateTime.parse(devices![index].updatedAt!)),
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           fontFamily: AppTheme.fontName,
