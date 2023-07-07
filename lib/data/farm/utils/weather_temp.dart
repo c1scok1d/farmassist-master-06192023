@@ -14,4 +14,7 @@ class TemperatureConvert {
   static double celsiusToKevlin(double temperature) {
     return (temperature + 273.15);
   }
+  static double kelvinToFarenheit(double temperature){
+    return (temperature - 273.15) * (9 / 5) + 32;
+  }
 }
