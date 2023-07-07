@@ -1,9 +1,12 @@
+import 'package:farmassist/data/farm/models/Forecast.dart';
 import 'package:farmassist/data/farm/models/Weather.dart';
 import 'package:farmassist/data/farm/view_model/cityEntryViewModel.dart';
 import 'package:farmassist/data/farm/view_model/weather_app_forecast_viewmodel.dart';
 import 'package:farmassist/ui/farm/weather/weatherSummaryView.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 import 'cityEntryView.dart';
 import 'gradient.dart';
@@ -15,6 +18,13 @@ class WeatherHome extends StatefulWidget {
 
 class _WeatherHomeState extends State<WeatherHome> {
   @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance?.addPostFrameCallback((_) {
+      refreshWeather(Provider.of<ForecastViewModel>(context, listen: false), context);
+    });
+  }
+  @override
   Widget build(BuildContext context) {
     return Consumer<ForecastViewModel>(
       builder: (context, model, child) => Container(
@@ -22,20 +32,21 @@ class _WeatherHomeState extends State<WeatherHome> {
             model.condition, model.isDaytime, buildHomeView(context, model)),
       ),
     );
+
   }
 
   @override
   Widget buildHomeView(BuildContext context, model) {
     return Consumer<ForecastViewModel>(
         builder: (context, weatherViewModel, child) => Container(
-            height: 225,
+            height: 250,
             child: RefreshIndicator(
               color: Colors.transparent,
               backgroundColor: Colors.transparent,
-              onRefresh: () => refreshWeather(weatherViewModel, context),
+              onRefresh: () =>  refreshWeather(weatherViewModel, context),
               child: ListView(
                 children: <Widget>[
-                  CityEntryView(),
+                  if (!weatherViewModel.isWeatherLoaded) CityEntryView(), // if weatherViewModel.city is empty hide
                   weatherViewModel.isRequestPending
                       ? buildBusyIndicator()
                       : weatherViewModel.isRequestError
@@ -49,6 +60,9 @@ class _WeatherHomeState extends State<WeatherHome> {
                                 feelsLike: weatherViewModel.feelsLike,
                                 isdayTime: weatherViewModel.isDaytime,
                                 iconData: weatherViewModel.iconData,
+                                city: weatherViewModel.city,
+                                description: weatherViewModel.description,
+                                daily: weatherViewModel.daily,
                                 model: model,
                                 // weatherModel: model,
                               ),
@@ -64,7 +78,7 @@ class _WeatherHomeState extends State<WeatherHome> {
       SizedBox(
         height: 20,
       ),
-      Text('Please Wait...',
+      Text('Loading weather...',
           style: TextStyle(
             fontSize: 18,
             color: Colors.white,
@@ -74,10 +88,82 @@ class _WeatherHomeState extends State<WeatherHome> {
   }
 
   Future<void> refreshWeather(ForecastViewModel weatherVM, BuildContext context) {
+    // check permissions and return lat/lng if permission allowed
+    final weather = _checkLocationPermission(weatherVM, context);
     // get the current city
-    String city = Provider.of<CityEntryViewModel>(context, listen: false).city;
-    return weatherVM.getLatestWeather(city);
+    //Position position;
+    //String city = Provider.of<CityEntryViewModel>(context, listen: false).city;
+    return weather;
   }
+
+  Future<void> _checkLocationPermission(ForecastViewModel weatherVM, BuildContext context) async {
+    PermissionStatus permission = await Permission.locationWhenInUse.status;
+    if (permission.isDenied) {
+      _showPermissionDeniedMessage(weatherVM);
+      //await _requestLocationPermission(weatherVM, context);
+    } else if (permission.isPermanentlyDenied) {
+      _showPermissionDeniedForeverMessage();
+    } else {
+      _getLocation(weatherVM, context);
+    }
+  }
+
+  Future<void> _requestLocationPermission(ForecastViewModel weatherVM, BuildContext context) async {
+    PermissionStatus permission = await Permission.locationWhenInUse.request();
+    if (permission.isGranted) {
+      _getLocation(weatherVM, context);
+    }
+  }
+
+  Future<Forecast> _getLocation(ForecastViewModel weatherVM, BuildContext context) async {
+    Position position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high);
+    return weatherVM.getLatestWeather(position);
+  }
+
+  void _showPermissionDeniedMessage(ForecastViewModel weatherVM) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('GPS Permission Denied'),
+          content: Text(
+              'GPS permission is necessary to get accurate weather readings.'),
+          actions: [
+            TextButton(
+              child: Text('OK'),
+              onPressed: () {
+                Navigator.of(context).pop();
+                _requestLocationPermission(weatherVM, context);
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _showPermissionDeniedForeverMessage() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('GPS Permission Denied Forever'),
+          content: Text(
+              'GPS permission is necessary to get accurate weather readings. Please grant the permission in the app settings.'),
+          actions: [
+            TextButton(
+              child: Text('OK'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
 
   GradientContainer _buildGradientContainer(
       WeatherCondition condition, bool isDayTime, Widget child) {

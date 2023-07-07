@@ -78,7 +78,7 @@ class _WeatherHomeStatisticsState extends State<WeatherHomeStatistics> {
       SizedBox(
         height: 20,
       ),
-      Text('Please Wait...',
+      Text('Loading weather...',
           style: TextStyle(
             fontSize: 18,
             color: Colors.white,

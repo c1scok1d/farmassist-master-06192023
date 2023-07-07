@@ -3,11 +3,13 @@ import 'dart:core';
 import 'package:farmassist/data/farm/api/openweathermap_weather_api.dart';
 import 'package:farmassist/data/farm/models/Forecast.dart';
 import 'package:farmassist/data/farm/models/Weather.dart';
+import 'package:farmassist/data/farm/models/WeatherResponse.dart';
 import 'package:farmassist/data/farm/services/forecast_service.dart';
 import 'package:farmassist/data/farm/utils/WeatherIconMapper.dart';
 import 'package:farmassist/data/farm/utils/weather_strings.dart';
 import 'package:farmassist/data/farm/utils/weather_temp.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:geolocator/geolocator.dart';
 
 class ForecastViewModel with ChangeNotifier {
   bool isRequestPending = false;
@@ -32,7 +34,7 @@ class ForecastViewModel with ChangeNotifier {
 
   WeatherCondition get condition => _condition ?? WeatherCondition.clear;
   IconData get iconData => getIconData(_iconCode ?? '');
-  String get description => _description!;
+  String get description => _description ?? '';
   String get iconCode => _iconCode ?? '';
   double get minTemp => _minTemp ?? 0.0;
   double get maxTemp => _maxTemp ?? 0.0;
@@ -52,21 +54,24 @@ class ForecastViewModel with ChangeNotifier {
     forecastService = ForecastService(OpenWeatherMapWeatherApi());
   }
 
-  Future<Forecast> getLatestWeather(String city) async {
+  Future<Forecast> getLatestWeather(Position position) async {
     setRequestPendingState(true);
     this.isRequestError = false;
-
+    //position.toString()
     late Forecast latest;
+    late WeatherResponse weatherResponse;
     try {
       await Future.delayed(Duration(seconds: 1), () => {});
-
-      latest = await forecastService.getWeather(city);
+      latest = await forecastService.getWeather(position);
+      weatherResponse = await forecastService.fetchWeatherData(position);
+      latest.city = weatherResponse.weatherData.cityName;
+      //latest.city = weatherResponse.c
     } catch (e) {
       this.isRequestError = true;
     }
 
     this.isWeatherLoaded = true;
-    updateModel(latest, city);
+    updateModel(latest, position);
     setRequestPendingState(false);
     notifyListeners();
     return latest;
@@ -77,24 +82,25 @@ class ForecastViewModel with ChangeNotifier {
     notifyListeners();
   }
 
-  void updateModel(Forecast forecast, String city) {
+  void updateModel(Forecast forecast, Position position) {
     if (isRequestError) {
       _daily = null;
       return;
     }
 
     _condition = forecast.current.condition;
-    _city = forecast.city;
+    //_city = forecast.city;
     _iconCode = forecast.current.iconCode;
 
     _description = Strings.toTitleCase(forecast.current.description);
     _lastUpdated = forecast.lastUpdated;
-    _temp = TemperatureConvert.kelvinToCelsius(forecast.current.temp);
-    _feelsLike = TemperatureConvert.kelvinToCelsius(forecast.current.feelLikeTemp);
+    _temp = TemperatureConvert.kelvinToFarenheit(forecast.current.temp);
+    _feelsLike = TemperatureConvert.kelvinToFarenheit(forecast.current.feelLikeTemp);
     _longitude = forecast.longitude;
     _latitude = forecast.latitude;
     _daily = forecast.daily;
     _isDayTime = forecast.isDayTime;
+    _city = forecast.city;
   }
 
   IconData getIconData(String iconCode) {
