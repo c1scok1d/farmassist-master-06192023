@@ -44,7 +44,7 @@ class TelemetryDataCardItem {
     TelemetryDataCardItem(
       title: 'Air Temperature',
       description: 'Weather parameter that measures how hot or cold the air is',
-      unit: '°C',
+      unit: '°F',
       imagePath: 'assets/images/air_temperature.png',
       color1: const Color(0xFF006400),
       color2: const Color(0xFF1FDF39),
