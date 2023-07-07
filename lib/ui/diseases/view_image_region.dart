@@ -74,11 +74,11 @@ class _ViewImageRegionState extends State<ViewImageRegion> {
 
   void _predict(File image) async {
     img.Image imageInput = img.decodeImage(image.readAsBytesSync())!;
-    // var prediction = _classifier.predict(imageInput);
+     var prediction = _classifier.predict(imageInput);
 
-    // setState(() {
-    //   this._category = prediction;
-    // });
+     setState(() {
+       this._category = prediction;
+     });
 
     if (_category.score > 0.5) {
       Future.delayed(
