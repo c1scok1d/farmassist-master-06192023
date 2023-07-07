@@ -7,15 +7,16 @@ class Forecast {
   final List<Weather> daily;
   final Weather current;
   final bool isDayTime;
-  String city;
+  late final String city;
+  //final double humidity;
 
   Forecast({
+    //required this.city,
     required this.lastUpdated,
     required this.longitude,
     required this.latitude,
     this.daily = const [],
     required this.current,
-    required this.city,
     required this.isDayTime,
   });
 
@@ -50,7 +51,7 @@ class Forecast {
         date: date);
 
     return Forecast(
-        city: 'dummy',
+        //city: json['city'],
         lastUpdated: DateTime.now(),
         current: currentForcast,
         latitude: json['lat'].toDouble(),
