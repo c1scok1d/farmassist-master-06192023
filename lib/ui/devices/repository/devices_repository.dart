@@ -37,7 +37,7 @@ class DevicesRepository {
 
   Future<List<Records>> getUserDevices() async {
     String? apiToken = await const FlutterSecureStorage().read(key: 'api_token');
-    //String? apiToken = '3FjWUXeYCrzbASVXwfk280ePaCqBtHk5JptXF29To2Dbp0QLJPAWbG7sDH7r';
+    //String? apiToken = 'H0d19PtqG92H8CdYr2QVibvo08YNRgMm9uoaKXuiOYzZpa5F1TyTn4hJZsCW';
 
     final response = await http.get(Uri.parse("$baseUrl/user/devices?api_token=$apiToken"));
 
