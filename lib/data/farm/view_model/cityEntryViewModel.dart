@@ -1,5 +1,6 @@
 import 'package:farmassist/data/farm/view_model/weather_app_forecast_viewmodel.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:geolocator_platform_interface/src/models/position.dart';
 import 'package:provider/provider.dart';
 
 class CityEntryViewModel with ChangeNotifier {
@@ -10,7 +11,7 @@ class CityEntryViewModel with ChangeNotifier {
   String get city => _city;
 
   void refreshWeather(String newCity, BuildContext context) {
-    Provider.of<ForecastViewModel>(context, listen: false).getLatestWeather(_city);
+    Provider.of<ForecastViewModel>(context, listen: false).getLatestWeather(_city as Position);
 
     notifyListeners();
   }
