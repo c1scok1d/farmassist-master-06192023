@@ -86,8 +86,8 @@ class WeatherSummary extends StatelessWidget {
             children: [
               for (int i = 0; i < daily.length && i < 5; i++)
                 Container(
-                  margin: EdgeInsets.all(8),
-                  padding: EdgeInsets.all(10),
+                  margin: EdgeInsets.all(6),
+                  padding: EdgeInsets.all(8),
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
