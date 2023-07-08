@@ -8,12 +8,12 @@ abstract class NewsEvent extends Equatable {
 }
 
 class Fetch extends NewsEvent {
-  final String type;
+  final String category;
 
-  Fetch({required this.type});
+  Fetch({required this.category});
   @override
-  List<Object> get props => [type];
+  List<Object> get props => [category];
 
   @override
-  String toString() => 'Fetch $type news';
+  String toString() => 'Fetch $category news';
 }

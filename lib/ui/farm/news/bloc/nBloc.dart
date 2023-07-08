@@ -17,8 +17,8 @@ class NewsBloc extends Bloc<NewsEvent, NewsState> {
     if (event is Fetch) {
       try {
         yield Loading();
-        final items = await repository.fetchAllNews(category: event.type);
-        yield Loaded(items: items, type: event.type);
+        final items = await repository.fetchAllNews(category: event.category);
+        yield Loaded(items: items, type: event.category);
       } catch (_) {
         yield Failure();
       }
