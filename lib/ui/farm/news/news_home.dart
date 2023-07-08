@@ -88,7 +88,7 @@ class HomePage extends StatelessWidget {
             }
             if (state is Loaded) {
               if (state.items.isEmpty) {
-                return Text('No content avilable');
+                return Text('No content available');
               } else {
                 return _body(context, state.items, type: state.type);
               }
