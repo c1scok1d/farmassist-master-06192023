@@ -35,7 +35,7 @@ class App extends StatelessWidget {
         BlocProvider<AuthenticationBloc>(
             create: (_) => AuthenticationBloc(authenticationRepository: _authenticationRepository)),
         BlocProvider<NewsBloc>(
-            create: (_) => NewsBloc(repository: Repository())..add(Fetch(type: 'Science'))),
+            create: (_) => NewsBloc(repository: Repository())..add(Fetch(category: 'Science'))),
         BlocProvider<DetailBloc>(
           create: (_) => DetailBloc(),
         ),
