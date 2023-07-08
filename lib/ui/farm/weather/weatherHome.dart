@@ -128,7 +128,7 @@ class _WeatherHomeState extends State<WeatherHome> {
         return AlertDialog(
           title: Text('GPS Permission Denied'),
           content: Text(
-              'GPS permission is necessary to get accurate weather readings.'),
+              'GPS permission is necessary to get accurate weather readings. Please tap OK to grant GPS permission'),
           actions: [
             TextButton(
               child: Text('OK'),
