@@ -13,8 +13,8 @@ class MessageHandler {
 
   Future<void> generateToken() async {
     _token = await _messaging.getToken();
-    await _userRepository.saveToken(_token!);
-    _messaging.onTokenRefresh.listen(_userRepository.saveToken);
+    //await _userRepository.saveToken(_token!);
+    //_messaging.onTokenRefresh.listen(_userRepository.saveToken);
   }
 
   Future<void> deleteToken() {
