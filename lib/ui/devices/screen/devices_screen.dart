@@ -2,6 +2,7 @@ import 'package:farmassist/ui/devices/cubit/devices_provider.dart';
 import 'package:farmassist/ui/devices/screen/add_device_Screen.dart';
 import 'package:farmassist/ui/widgets/tab_page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -32,15 +33,14 @@ class _DevicesScreenState extends TabPageState<DevicesScreen> {
     return Padding(
       padding: const EdgeInsets.only(bottom: 80),
       child: Scaffold(
-        appBar: AppBar(toolbarHeight: 0, elevation: 0),
+        appBar: AppBar(title: Text(widget.pageTitle,style: TextStyle(color: Colors.black),),toolbarHeight: 50, elevation: 0,backgroundColor: Colors.white,),
         floatingActionButton: FloatingActionButton(
           child: Icon(Icons.add),
           onPressed: () {
             Navigator.push(context, MaterialPageRoute(builder: (_) => BLESCR()));
           },
         ),
-        body: Consumer<DevicesProvider>(
-          builder: (context, provider, _) {
+        body: Consumer<DevicesProvider>(builder: (context, provider, _) {
             if (provider.loadingDevices) {
               return Center(
                 child: CircularProgressIndicator(),
@@ -59,73 +59,251 @@ class _DevicesScreenState extends TabPageState<DevicesScreen> {
               itemCount: devices!.length,
               separatorBuilder: (_, i) => SizedBox(height: 10),
               itemBuilder: (_, index) {
-                return ListTile(
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                  tileColor: getColorFromMoisture(devices[index].moisture),
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) => DeviceDataScreen(deviceData: devices[index]),
+                return  Stack(
+                  alignment: AlignmentDirectional.center,
+                  children: [
+                    Padding(
+                      padding:  EdgeInsets.only(
+                        left: 24.w,
+                        right: 24.w,
+                        top: 10.h,
+                        bottom: 18.h,
                       ),
-                    );
-                  },
-                  trailing: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [getBatteryIcon(devices[index].batt)],
-                  ),
-                  title: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Sensor'.padRight(15) + ' : ' + (devices[index].sensor ?? 0).toString(),
-                        textAlign: TextAlign.left,
-                        style: TextStyle(
-                          fontFamily: AppTheme.fontName,
-                          fontWeight: FontWeight.normal,
-                          fontSize: 16,
-                          letterSpacing: 0.0,
-                          color: AppTheme.white,
-                        ),
+                      child: Stack(
+                        children: [
+                          Container(
+                            decoration: BoxDecoration(
+                              gradient: getColorFromMoisture(devices[index].moisture),
+                              borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(8.0),
+                                bottomLeft: Radius.circular(8.0),
+                                bottomRight: Radius.circular(8.0),
+                                topRight: Radius.circular(68.0),
+                              ),
+                              boxShadow: <BoxShadow>[
+                                BoxShadow(
+                                  color: AppTheme.background.withOpacity(0.6),
+                                  offset: Offset(1.1, 1.1),
+                                  blurRadius: 10.0,
+                                ),
+                              ],
+                            ),
+                            child: ListTile(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              tileColor: Colors.transparent,
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (_) => DeviceDataScreen(deviceData: devices[index]),
+                                  ),
+                                );
+                              },
+                              title: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Sensor'.padRight(15) + ' : ' + (devices[index].sensor ?? 0).toString(),
+                                    textAlign: TextAlign.left,
+                                    style: TextStyle(
+                                      fontFamily: AppTheme.fontName,
+                                      fontWeight: FontWeight.normal,
+                                      fontSize: 16,
+                                      letterSpacing: 0.0,
+                                      color: AppTheme.white,
+                                    ),
+                                  ),
+                                  Text(
+                                    'Moisture'.padRight(14) + ' : ' + (devices[index].moisture ?? 0).toString(),
+                                    textAlign: TextAlign.left,
+                                    style: TextStyle(
+                                      fontFamily: AppTheme.fontName,
+                                      fontWeight: FontWeight.normal,
+                                      fontSize: 16,
+                                      letterSpacing: 0.0,
+                                      color: AppTheme.white,
+                                    ),
+                                  ),
+                                  Text(
+                                    'Location'.padRight(14) + ' : ' + (devices[index].location ?? 0).toString(),
+                                    textAlign: TextAlign.left,
+                                    style: TextStyle(
+                                      fontFamily: AppTheme.fontName,
+                                      fontWeight: FontWeight.normal,
+                                      fontSize: 16,
+                                      letterSpacing: 0.0,
+                                      color: AppTheme.white,
+                                    ),
+                                  ),
+                                  Text(
+                                    'Updated At'.padRight(12) + ' : ' + DateFormat("dd,MMM yyyy").format(DateTime.parse(devices[index].updatedAt!)),
+                                    textAlign: TextAlign.left,
+                                    style: TextStyle(
+                                      fontFamily: AppTheme.fontName,
+                                      fontWeight: FontWeight.normal,
+                                      fontSize: 16,
+                                      letterSpacing: 0.0,
+                                      color: AppTheme.white,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+
+                        ],
                       ),
-                   /*   Text(
-                        'Moisture'.padRight(14) + ' : ' + (devices[index].moisture ?? 0).toString(),
-                        textAlign: TextAlign.left,
-                        style: TextStyle(
-                          fontFamily: AppTheme.fontName,
-                          fontWeight: FontWeight.normal,
-                          fontSize: 16,
-                          letterSpacing: 0.0,
-                          color: AppTheme.white,
-                        ),
-                      ), */
-                      Text(
-                        'Location'.padRight(14) + ' : ' + (devices[index].location ?? 0).toString(),
-                        textAlign: TextAlign.left,
-                        style: TextStyle(
-                          fontFamily: AppTheme.fontName,
-                          fontWeight: FontWeight.normal,
-                          fontSize: 16,
-                          letterSpacing: 0.0,
-                          color: AppTheme.white,
-                        ),
+                    ),
+                    Positioned(
+                      top: 0.0,
+                      right: 5.0,
+                      height: 80,
+                      // width: 80,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          if (devices[index].moisture != null && devices[index].moisture != 0)
+                            Image.asset('assets/images/soil_moisture.png',  width: 28,  // Adjust the width as needed
+                              height: 28, ),
+                          if (devices[index].temperature != null && devices[index].temperature != 0)
+                            Image.asset('assets/images/air_temperature.png',
+                              width: 28,  // Adjust the width as needed
+                              height: 28, ),
+                          if (devices[index].humidity != null && devices[index].humidity != 0)
+                            Image.asset('assets/images/air_humidity.png',
+                              width: 28,  // Adjust the width as needed
+                              height: 28, ),
+                        ],
                       ),
-                      Text(
-                        'Updated ' +
-                timeago.format(DateTime.parse(devices![index].updatedAt!)),
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontFamily: AppTheme.fontName,
-                          fontWeight: FontWeight.normal,
-                          fontSize: 16,
-                          letterSpacing: 0.0,
-                          color: AppTheme.white,
-                        ),
-                      ),
-                    ],
-                  ),
+                    ),
+                  ],
                 );
+
+
+                //   ListTile(
+                //   shape: RoundedRectangleBorder(
+                //       borderRadius: BorderRadius.circular(10)),
+                //   tileColor: getColorFromMoisture(devices[index].moisture),
+                //   onTap: () {
+                //     Navigator.push(
+                //       context,
+                //       MaterialPageRoute(
+                //         builder: (_) =>
+                //             DeviceDataScreen(deviceData: devices[index]),
+                //       ),
+                //     );
+                //   },
+                //   trailing: Column(
+                //     mainAxisAlignment: MainAxisAlignment.start,
+                //     children: [getBatteryIcon(devices[index].batt)],
+                //   ),
+                //   title: Column(
+                //     mainAxisSize: MainAxisSize.min,
+                //     crossAxisAlignment: CrossAxisAlignment.start,
+                //     children: [
+                //       Text(
+                //           'Sensor'.padRight(15) +
+                //               ' : ' +
+                //               (devices[index].sensor ?? 0).toString(),
+                //           textAlign: TextAlign.left,
+                //           style: AppTheme.appTheme.textTheme.titleLarge!
+                //               .copyWith(color: Colors.white)),
+                //       Text(
+                //           'Moisture'.padRight(14) +
+                //               ' : ' +
+                //               (devices[index].moisture ?? 0).toString(),
+                //           textAlign: TextAlign.left,
+                //           style: AppTheme.appTheme.textTheme.titleLarge!
+                //               .copyWith(color: Colors.white)),
+                //       Text(
+                //           'Location'.padRight(14) +
+                //               ' : ' +
+                //               (devices[index].location ?? 0).toString(),
+                //           textAlign: TextAlign.left,
+                //           style: AppTheme.appTheme.textTheme.titleLarge!
+                //               .copyWith(color: Colors.white)),
+                //       Text(
+                //           'Updated At'.padRight(12) +
+                //               ' : ' +
+                //               DateFormat("dd,MMM yyyy").format(
+                //                   DateTime.parse(devices[index].updatedAt!)),
+                //           textAlign: TextAlign.left,
+                //           style: AppTheme.appTheme.textTheme.titleLarge!
+                //               .copyWith(color: Colors.white)),
+                //     ],
+                //   ),
+                // );
+
+                //   ListView.separated(
+                //   padding: EdgeInsets.only(left: 10, right: 10, top: 10),
+                //   itemCount: 4,
+                //   separatorBuilder: (_, i) => SizedBox(height: 10),
+                //   itemBuilder: (_, index) {
+                //     return ListTile(
+                //       shape: RoundedRectangleBorder(
+                //           borderRadius: BorderRadius.circular(10)),
+                //       tileColor:
+                //           getColorFromMoisture(50), // Hardcoded moisture value (50)
+                //       onTap: () {
+                //         // Navigator.push(
+                //         //   context,
+                //         //   MaterialPageRoute(
+                //         //     builder: (_) =>
+                //         //         DeviceDataScreen(deviceData: devices[index]),
+                //         //   ),
+                //         // );
+                //       },
+                //       trailing: Column(
+                //         mainAxisAlignment: MainAxisAlignment.start,
+                //         children: [
+                //           getBatteryIcon(80)
+                //         ], // Hardcoded battery value (80)
+                //       ),
+                //       title: Column(
+                //         mainAxisSize: MainAxisSize.min,
+                //         crossAxisAlignment: CrossAxisAlignment.start,
+                //         children: [
+                //           Text(
+                //             'Sensor'.padRight(15) +
+                //                 ' : ' +
+                //                 '123', // Hardcoded sensor value ('123')
+                //             textAlign: TextAlign.left,
+                //             style: AppTheme.appTheme.textTheme.titleLarge!
+                //                 .copyWith(color: Colors.white),
+                //           ),
+                //           Text(
+                //             'Moisture'.padRight(14) +
+                //                 ' : ' +
+                //                 '50', // Hardcoded moisture value ('50')
+                //             textAlign: TextAlign.left,
+                //             style: AppTheme.appTheme.textTheme.titleLarge!
+                //                 .copyWith(color: Colors.white),
+                //           ),
+                //           Text(
+                //             'Location'.padRight(14) +
+                //                 ' : ' +
+                //                 'New York', // Hardcoded location value ('New York')
+                //             textAlign: TextAlign.left,
+                //             style: AppTheme.appTheme.textTheme.titleLarge!
+                //                 .copyWith(color: Colors.white),
+                //           ),
+                //           Text(
+                //             'Updated At'.padRight(12) +
+                //                 ' : ' +
+                //                 'Jun 24, 2023', // Hardcoded updated date value ('Jun 24, 2023')
+                //             textAlign: TextAlign.left,
+                //             style: AppTheme.appTheme.textTheme.titleLarge!
+                //                 .copyWith(color: Colors.white),
+                //           ),
+                //         ],
+                //       ),
+                //     );
+                //   },
+                // );
 
                 // return Card(
                 //   child: ListTile(
@@ -145,211 +323,44 @@ class _DevicesScreenState extends TabPageState<DevicesScreen> {
                 // );
               },
             );
-          },
-        ),
-      ),
-    );
+        })));
   }
-/*
-  @override
-  Widget build(BuildContext context) {
-    super.build(context);
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 80),
-      child: Scaffold(
-        floatingActionButton: FloatingActionButton(
-          child: Icon(Icons.add),
-          onPressed: () {
-            Navigator.push(context, MaterialPageRoute(builder: (_) => BLESCR()));
-          },
-        ),
-        body: Consumer<DevicesProvider>(
-          builder: (context, provider, _) {
-            if (provider.loadingDevices) {
-              return Center(
-                child: CircularProgressIndicator(),
-              );
-            } else if (provider.devicesData!.isEmpty) {
-              return Center(
-                child: Text(
-                  'No Devices',
-                  style: TextStyle(),
-                ),
-              );
-            }
-            final devices = provider.devicesData;
-            return ListView.builder(
-              itemCount: devices?.length,
-              itemBuilder: (_, index) {
-                return Stack(
-                  alignment: AlignmentDirectional.center,
-                  children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.only(
-                        left: 24.0,
-                        right: 24.0,
-                        top: 16.0,
-                        bottom: 18.0,
-                      ),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                            colors: [
-                              Colors.blue,
-                              Colors.blue,
-                            ],
-                            begin: Alignment.topLeft,
-                            end: Alignment.bottomRight,
-                          ),
-                          borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(8.0),
-                            bottomLeft: Radius.circular(8.0),
-                            bottomRight: Radius.circular(8.0),
-                            topRight: Radius.circular(68.0),
-                          ),
-                          boxShadow: <BoxShadow>[
-                            BoxShadow(
-                              color: AppTheme.grey.withOpacity(0.6),
-                              offset: Offset(1.1, 1.1),
-                              blurRadius: 10.0,
-                            ),
-                          ],
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(16.0),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Text(
-                                'Sensor'.padRight(15) + ' : ' + (devices?[index].sensor ?? 0).toString(),
-                                textAlign: TextAlign.left,
-                                style: TextStyle(
-                                  fontFamily: AppTheme.fontName,
-                                  fontWeight: FontWeight.normal,
-                                  fontSize: 16,
-                                  letterSpacing: 0.0,
-                                  color: AppTheme.white,
-                                ),
-                              ),
-                                 Text(
-                                  'Moisture'.padRight(14) + ' : ' + (devices?[index].moisture ?? 0).toString(),
-                                  textAlign: TextAlign.left,
-                                  style: TextStyle(
-                                    fontFamily: AppTheme.fontName,
-                                    fontWeight: FontWeight.normal,
-                                    fontSize: 16,
-                                    letterSpacing: 0.0,
-                                    color: AppTheme.white,
-                                  ),
-                                ),
-                              Text(
-                                'Location'.padRight(14) + ' : ' + (devices?[index].location ?? 0).toString(),
-                                textAlign: TextAlign.left,
-                                style: TextStyle(
-                                  fontFamily: AppTheme.fontName,
-                                  fontWeight: FontWeight.normal,
-                                  fontSize: 16,
-                                  letterSpacing: 0.0,
-                                  color: AppTheme.white,
-                                ),
-                              ),
-                              Text(
-                                'Updated '.padRight(12) +
-                                    ' : ' +
-                                timeago.format(DateTime.parse(devices![index].updatedAt!)) + ' ago',
-                                    //DateFormat("dd,MMM yyyy")
-                                      //  .format(DateTime.parse(devices![index].updatedAt!)),
-                                textAlign: TextAlign.right,
-                                style: TextStyle(
-                                  fontFamily: AppTheme.fontName,
-                                  fontWeight: FontWeight.normal,
-                                  fontSize: 16,
-                                  letterSpacing: 0.0,
-                                  color: AppTheme.white,
-                                ),
-                              ),
-                              /*Text(
-                                devices?[index].hostName ?? '',
-                                textAlign: TextAlign.left,
-                                style: TextStyle(
-                                  fontFamily: AppTheme.fontName,
-                                  fontWeight: FontWeight.normal,
-                                  fontSize: 20,
-                                  letterSpacing: 0.0,
-                                  color: AppTheme.white,
-                                ),
-                              ),
-                              Text(
-                                // devices[index].,
-                                'battery level here {level not included in device response}',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  fontFamily: AppTheme.fontName,
-                                  fontWeight: FontWeight.normal,
-                                  fontSize: 30,
-                                  letterSpacing: 0.0,
-                                  color: AppTheme.white,
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(top: 8.0),
-                                child: FractionallySizedBox(
-                                  widthFactor: 0.8,
-                                  child: Text(
-                                    devices?[index].updatedAt ??
-                                        DateFormat('yyyy-MMM-dd hh:mm a').format(DateTime.now()),
-                                    textAlign: TextAlign.left,
-                                    style: TextStyle(
-                                      fontFamily: AppTheme.fontName,
-                                      fontWeight: FontWeight.normal,
-                                      fontSize: 16,
-                                      letterSpacing: 0.0,
-                                      color: AppTheme.white,
-                                    ),
-                                  ),
-                                ),
-                              ),*/
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                    Positioned(
-                      top: 4.0,
-                      right: 40.0,
-                      height: 50,
-                      width: 50,
-                      child: Image.asset('assets/images/plant_icon.png'),
-                    ),
-                  ],
-                );
-              },
-            );
-          },
-        ),
-      ),
-    );
-  }*/
 
-  Color getColorFromMoisture(num? moisture) {
+  LinearGradient getColorFromMoisture(num? moisture) {
     if (moisture == null) {
-      return Colors.red;
+      return LinearGradient(
+        colors: [Colors.green, Colors.orangeAccent],
+        begin: Alignment.topLeft,
+        end: Alignment.bottomRight,
+      );
     } else if (moisture > 70) {
-      return Colors.green;
-    } else if (moisture < 70 && moisture > 40) {
-      return Colors.orange;
+      return LinearGradient(
+        colors: [Color(0xFF006400), Color(0xFF1FDF39)],
+        begin: Alignment.topLeft,
+        end: Alignment.bottomRight,
+      );
+    } else if (moisture > 40) {
+      return LinearGradient(
+        colors: [Color(0xFF800000), Color(0xFFD2691E)],
+        begin: Alignment.topLeft,
+        end: Alignment.bottomRight,
+      );
     } else {
-      return Colors.red;
+      return LinearGradient(
+        colors: [Colors.yellow, Colors.orangeAccent],
+        begin: Alignment.topLeft,
+        end: Alignment.bottomRight,
+      );
     }
   }
+
 
   Widget getBatteryIcon(num? batt) {
     if (batt == null) {
       return SizedBox.shrink();
-    } else if (batt > 70 && batt > 40) {
+    } else if (batt > 70) {
       return SvgPicture.asset('assets/svg/battery3.svg');
-    } else if (batt < 40) {
+    } else if (batt > 40) {
       return SvgPicture.asset('assets/svg/battery2.svg');
     } else {
       return SvgPicture.asset('assets/svg/battery1.svg');

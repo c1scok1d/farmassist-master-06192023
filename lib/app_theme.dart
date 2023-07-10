@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class AppTheme {
   AppTheme._();
@@ -133,4 +135,204 @@ class AppTheme {
       color: Colors.red,
     ),
   );
+  static ThemeData appTheme = ThemeData(
+    // pageTransitionsTheme: PageTransitionsTheme(
+    //   builders: {
+    //     TargetPlatform.android: CustomPageTransitionBuilder(),
+    //     TargetPlatform.iOS: CustomPageTransitionBuilder(),
+    //   },
+    // ),
+    primaryColor: const Color(0xFF24D900),
+    canvasColor: Colors.grey,
+    splashColor: Colors.transparent,
+    highlightColor: Colors.transparent,
+    scaffoldBackgroundColor: Colors.white,
+    indicatorColor: const Color(0xFFF6BC18),
+    appBarTheme: AppBarTheme(
+      backgroundColor: Colors.transparent,
+      elevation: 0,
+      toolbarHeight: 28.h,
+    ),
+    textTheme: TextTheme(
+      displayLarge: GoogleFonts.poppins(
+        fontSize: 93.sp,
+        fontWeight: FontWeight.w300,
+        letterSpacing: -1.5,
+        color: Colors.white,
+      ),
+      displayMedium: GoogleFonts.poppins(
+        fontSize: 58.sp,
+        fontWeight: FontWeight.w300,
+        letterSpacing: -0.5,
+        color: Colors.white,
+      ),
+      displaySmall: GoogleFonts.poppins(
+        fontSize: 46.sp,
+        fontWeight: FontWeight.w400,
+        color: Colors.white,
+      ),
+      headlineMedium: GoogleFonts.poppins(
+        fontSize: 33.sp,
+        fontWeight: FontWeight.w400,
+        letterSpacing: 0.25,
+        color: Colors.white,
+      ),
+      headlineSmall: GoogleFonts.poppins(
+        fontSize: 23.sp,
+        fontWeight: FontWeight.w400,
+        color: Colors.white,
+      ),
+      titleLarge: GoogleFonts.poppins(
+        fontSize: 19.sp,
+        fontWeight: FontWeight.w500,
+        letterSpacing: 0.15,
+        color: const Color(0xFF000812),
+      ),
+      titleMedium: GoogleFonts.poppins(
+        fontSize: 15.sp,
+        fontWeight: FontWeight.w700,
+        letterSpacing: 0.15,
+        color: const Color(0xFF000812),
+      ),
+      titleSmall: GoogleFonts.poppins(
+        fontSize: 13.sp,
+        fontWeight: FontWeight.w500,
+        letterSpacing: 0.1,
+        color: const Color(0xFF000812),
+      ),
+      bodyLarge: GoogleFonts.openSans(
+        color: const Color(0xFF000812),
+        fontSize: 16.sp,
+        fontWeight: FontWeight.w400,
+        letterSpacing: 0.5,
+      ),
+      bodyMedium: GoogleFonts.openSans(
+        color: const Color(0xFF000812),
+        fontSize: 14.sp,
+        fontWeight: FontWeight.w500,
+        letterSpacing: 0.25,
+      ),
+      labelLarge: GoogleFonts.poppins(
+        color: Colors.white,
+        fontSize: 14.sp,
+        fontWeight: FontWeight.w500,
+        letterSpacing: 1.25,
+      ),
+      bodySmall: GoogleFonts.poppins(
+        color: Colors.grey,
+        fontSize: 12.sp,
+        fontWeight: FontWeight.w400,
+        letterSpacing: 0.4,
+      ),
+      labelSmall: GoogleFonts.poppins(
+        color: Colors.grey,
+        fontSize: 10.sp,
+        fontWeight: FontWeight.w400,
+        letterSpacing: 1.5,
+      ),
+    ),
+    textSelectionTheme: TextSelectionThemeData(
+      selectionColor: const Color(0xFF000812).withOpacity(0.4),
+      selectionHandleColor: const Color(0xFF000812),
+      // cursorColor:  AppTheme.appTheme.primaryColor,
+      cursorColor: const Color(0xFF24D900),
+    ),
+    floatingActionButtonTheme:  FloatingActionButtonThemeData(elevation: 10, backgroundColor: Color(0xFF24D900)),
+    listTileTheme: const ListTileThemeData(
+      iconColor: Color(0xFF24D900),
+    ),
+    inputDecorationTheme: InputDecorationTheme(
+      filled: false,
+      hintStyle: GoogleFonts.poppins(
+        color: Colors.grey.withOpacity(0.5),
+        fontWeight: FontWeight.w500,
+        letterSpacing: 0.25,
+      ),
+      labelStyle: GoogleFonts.poppins(
+        color: Colors.grey.withOpacity(0.5),
+        fontWeight: FontWeight.w500,
+        letterSpacing: 0.25,
+      ),
+      floatingLabelStyle: GoogleFonts.poppins(
+        color: const Color(0xFF000812),
+        fontWeight: FontWeight.w500,
+        letterSpacing: 0.25,
+      ),
+      isCollapsed: false,
+      // isDense: true,
+      contentPadding: EdgeInsets.symmetric(horizontal: 22.w, vertical: 18.h),
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(50.r),
+        borderSide:  BorderSide(
+            color: Color(0xFF000812).withOpacity(0.7)
+
+        ),
+      ),
+      enabledBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(50.r),
+        borderSide: BorderSide(
+            color: Color(0xFF000812).withOpacity(0.7)
+        ),
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(50.r),
+        borderSide:  BorderSide(
+            color: Color(0xFF000812).withOpacity(0.7)
+          // color: Color(0xFF000812),
+        ),
+      ),
+      errorBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(50.r),
+        borderSide: const BorderSide(
+          color: Colors.redAccent,
+        ),
+      ),
+      focusedErrorBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(50.r),
+        borderSide: const BorderSide(
+          color: Colors.redAccent,
+        ),
+      ),
+    ),
+    checkboxTheme: CheckboxThemeData(
+      fillColor: MaterialStateProperty.all<Color>(const Color(0xFF000812)),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(3.r),
+      ),
+    ),
+
+    elevatedButtonTheme: ElevatedButtonThemeData(
+      style: ButtonStyle(
+        backgroundColor: MaterialStateProperty.resolveWith((states) {
+          if (states.contains(MaterialState.disabled)) {
+            return const Color(0xFF24D900).withOpacity(0.7);
+          } else {
+            return const Color(0xFF24D900);
+          }
+        }),
+        foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
+        minimumSize: MaterialStateProperty.all(Size(double.infinity, 48.h)),
+        shape: MaterialStateProperty.all<OutlinedBorder>(const StadiumBorder()),
+      ),
+    ),
+    outlinedButtonTheme: OutlinedButtonThemeData(
+      style: ButtonStyle(
+        side: MaterialStateProperty.resolveWith((states) {
+          if (states.contains(MaterialState.disabled)) {
+            return BorderSide(width: 1.0.w, color: const Color(0xFF000812).withOpacity(0.7));
+          } else {
+            return  BorderSide(width: 1.0.w, color: Color(0xFF000812).withOpacity(0.7));
+          }
+        }),
+        foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
+        maximumSize: MaterialStateProperty.all(Size(double.infinity, 48.h)),
+        minimumSize: MaterialStateProperty.all(Size(64.w, 48.h)),
+        shape: MaterialStateProperty.all<OutlinedBorder>(const StadiumBorder()),
+      ),
+    ), colorScheme: ColorScheme.fromSwatch(
+    accentColor: const Color(0xFF261854),
+    errorColor: Colors.red,
+  ).copyWith(error: Colors.redAccent),
+  );
+
 }
