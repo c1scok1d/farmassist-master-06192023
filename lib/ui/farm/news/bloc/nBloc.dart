@@ -17,7 +17,6 @@ class NewsBloc extends Bloc<NewsEvent, NewsState> {
         final items = await repository.fetchAllNews(category: event.category);
         emit(Loaded(items: items, type: event.category));
       } catch (ex) {
-        debugPrint(ex.toString());
         emit(Failure());
       }
     });
