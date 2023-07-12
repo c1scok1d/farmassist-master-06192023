@@ -5,10 +5,9 @@ import 'package:http/http.dart';
 class NewsApiProvider {
   Client client = Client();
   final _apiKey = Constant.newsApiKey;
-
   Future<List<Article>> fetchNewsList({String category = ''}) async {
     var url =
-        "${Constant.baseUrl}${Constant.topHeadLine}?country=us&apiKey=$_apiKey";
+        "${Constant.baseUrl}${Constant.topHeadLine}?sources=google-news&apiKey=$_apiKey";
     // print("entered Url : $url");
     final response = await client.get(Uri.parse(url));
     // print(response.body.toString());
